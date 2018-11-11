@@ -9,7 +9,7 @@ const App = createStackNavigator(
     Owlet: { screen: Owlet }
   },
   {
-    initialRouteName: "Dashboard",
+    initialRouteName: "Owlet",
     headerMode: "none",
     navigationOptions: {
       swipeEnabled: true,

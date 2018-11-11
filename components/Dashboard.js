@@ -1,6 +1,9 @@
 import React from "react";
 import { Font } from "expo";
 import SocketIOClient from "socket.io-client";
+import Pusher from "pusher-js/react-native";
+
+import config from "../services/config";
 
 import {
   View,
@@ -12,41 +15,28 @@ import {
 
 import styles from "../styles";
 
-// import vitalService from "../services/vitals";
-
-const atheneURL = "https://4558692d.ngrok.io";
-
 export default class Dashboard extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      heartRate: "00",
-      barometer: "00",
-      accelerometer: "00"
-    };
+    this.state = { heartRate: 0, barometer: 0 };
 
-    this.socket = SocketIOClient(atheneURL);
-    this.socket.on("vitals", this.onReceivedVitals);
+    this.socket = new Pusher(config.PUSHER_KEY, {
+      cluster: config.PUSHER_CLUSTER
+    });
+    this.channel = this.socket.subscribe("hoot");
+    this.channel.bind("vitals", vitals => {
+      this.setState({
+        heartRate: vitals.heartRate,
+        barometer: vitals.barometer
+      });
+    });
   }
 
-  // componentDidMount = () => {
-  //   await Font.loadAsync({
-  //     "Poppins-Bold": require("../assets/fonts/Poppins/Poppins-Bold.ttf")
-  //   });
-  // };
-
-  componentWillUnMount() {
-    this.socket.emit("disconnect");
-  }
-
-  onReceivedVitals = vitals => {
-    this.setState(vitals);
-  };
-
-  render() {
+   render() {
     const { navigate } = this.props.navigation;
-    const { heartRate, barometer, accelerometer } = this.state;
+    const { heartRate, barometer } = this.state;
+
     return (
       <ImageBackground
         style={styles.dash_cover}
@@ -71,7 +61,7 @@ export default class Dashboard extends React.Component {
             </View>
             <View style={styles.dashboard_vitals_flex}>
               <Text style={styles.dashboard_vitals_container_text}>
-                {barometer.substring(0, 4)}
+                {barometer.toString().substring(0, 4)}
               </Text>
               <Text style={styles.dashboard_vitals_container_text_description}>
                 mb

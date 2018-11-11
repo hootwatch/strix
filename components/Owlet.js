@@ -8,14 +8,14 @@ import userService from "../services/user";
 
 export default class Owlet extends React.Component {
   state = {
-    vitals: [{ heartRate: "102", time: "10:58:33 pm", barometer: "1023" }],
+    vitals: [],
     user: { name: "", pic: "" }
   };
   componentDidMount = async () => {
     try {
       const profile = await userService.read();
 
-      this.setState({ vitals: profile.vitals, user: profile.user });
+      this.setState({ vitals: profile.vitals.reverse(), user: profile.user });
     } catch (e) {
       console.log(e);
     }
@@ -56,7 +56,7 @@ export default class Owlet extends React.Component {
 
           <ScrollView>
             <View style={styles.owlet_container}>
-              {this.renderVitals(vitals)}
+              {vitals.length > 0 && this.renderVitals(vitals)}
             </View>
           </ScrollView>
         </View>
