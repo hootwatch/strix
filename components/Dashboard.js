@@ -2,7 +2,13 @@ import React from "react";
 import { Font } from "expo";
 import SocketIOClient from "socket.io-client";
 
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  ImageBackground,
+  TouchableOpacity
+} from "react-native";
 
 import styles from "../styles";
 
@@ -14,7 +20,11 @@ export default class Dashboard extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { heartRate: "00", barometer: "00", accelerometer: "00" };
+    this.state = {
+      heartRate: "00",
+      barometer: "00",
+      accelerometer: "00"
+    };
 
     this.socket = SocketIOClient(atheneURL);
     this.socket.on("vitals", this.onReceivedVitals);
@@ -26,54 +36,56 @@ export default class Dashboard extends React.Component {
   //   });
   // };
 
-  // read = async () => {
-  //   try {
-  //     const vital = await vitalService.read();
-  //     this.setState({ vital });
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
+  componentWillUnMount() {
+    this.socket.emit("disconnect");
+  }
+
   onReceivedVitals = vitals => {
-    console.log(vitals);
     this.setState(vitals);
   };
 
-  owlet = () => console.log("owlet");
-
   render() {
+    const { navigate } = this.props.navigation;
     const { heartRate, barometer, accelerometer } = this.state;
     return (
-      <View style={styles.container}>
-        <Image
-          source={require("../assets/splash_icon.png")}
-          style={styles.splash_icon}
-        />
-        <View style={styles.dashboard_vitals_container}>
-          <View style={styles.dashboard_vitals_flex}>
-            <Text style={styles.dashboard_vitals_container_text}>
-              {heartRate}
-            </Text>
-            <Text style={styles.dashboard_vitals_container_text_description}>
-              bpm
-            </Text>
-          </View>
-          <View style={styles.dashboard_vitals_flex}>
-            <Text style={styles.dashboard_vitals_container_text}>
-              {barometer}
-            </Text>
-            <Text style={styles.dashboard_vitals_container_text_description}>
-              Pa
-            </Text>
+      <ImageBackground
+        style={styles.dash_cover}
+        source={require("../assets/bg_gif.gif")}
+      >
+        <View style={styles.dash_container}>
+          <Image
+            source={require("../assets/splash_icon.png")}
+            style={styles.splash_icon}
+          />
+          <View style={styles.dashboard_vitals_container}>
+            <View style={styles.dashboard_vitals_flex}>
+              <Text
+                style={styles.dashboard_vitals_container_text}
+                numberOfLines={1}
+              >
+                {heartRate}
+              </Text>
+              <Text style={styles.dashboard_vitals_container_text_description}>
+                bpm
+              </Text>
+            </View>
+            <View style={styles.dashboard_vitals_flex}>
+              <Text style={styles.dashboard_vitals_container_text}>
+                {barometer.substring(0, 4)}
+              </Text>
+              <Text style={styles.dashboard_vitals_container_text_description}>
+                mb
+              </Text>
+            </View>
           </View>
           <TouchableOpacity
             style={styles.dashboard_button}
-            onPress={this.owlet}
+            onPress={() => navigate("Owlet")}
           >
             <Text style={styles.dashboard_button_text}>Owlet</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ImageBackground>
     );
   }
 }

@@ -1,5 +1,5 @@
 const config = {
-  atheneURL: "htto:localhost:3000/athene"
+  atheneURL: "https://4558692d.ngrok.io/athene"
 };
 
 export default config;

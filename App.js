@@ -1,19 +1,19 @@
 import { createStackNavigator } from "react-navigation";
 
-import Splash from "./components/Splash";
 import Dashboard from "./components/Dashboard";
+import Owlet from "./components/Owlet";
 
 const App = createStackNavigator(
   {
-    Splash: { screen: Splash },
-    Dashboard: { screen: Dashboard }
+    Dashboard: { screen: Dashboard },
+    Owlet: { screen: Owlet }
   },
   {
     initialRouteName: "Dashboard",
     headerMode: "none",
     navigationOptions: {
-      swipeEnabled: false,
-      gesturesEnabled: false
+      swipeEnabled: true,
+      gesturesEnabled: true
     }
   }
 );
