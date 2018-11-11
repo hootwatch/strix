@@ -1,6 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { View, Image, ImageBackground, Text, ScrollView } from "react-native";
+import format from "date-fns/format";
 
 import styles from "../styles";
 
@@ -28,7 +29,7 @@ export default class Owlet extends React.Component {
           {v.heartRate} bpm
         </Text>
         <Text style={styles.owlet_vital_container_text_yellow}>
-          {moment(v.time).format("MMMM Do YYYY, h:mm:ss a")}
+          {format(v.time, "h:mm:ss a")}
         </Text>
         <Text style={styles.owlet_vital_container_text_white}>
           {v.barometer.substring(0, 4)} mb
@@ -55,6 +56,9 @@ export default class Owlet extends React.Component {
           />
 
           <ScrollView>
+            <Text style={styles.owlet_date}>
+              {format(new Date(), "MMMM  Do")}
+            </Text>
             <View style={styles.owlet_container}>
               {vitals.length > 0 && this.renderVitals(vitals)}
             </View>

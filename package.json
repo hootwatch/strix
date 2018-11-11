@@ -9,6 +9,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "date-fns": "^1.29.0",
     "expo": "^31.0.2",
     "moment": "^2.22.2",
     "pusher-js": "^4.3.1",

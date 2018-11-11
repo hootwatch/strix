@@ -106,7 +106,7 @@ export default StyleSheet.create({
     justifyContent: "space-between",
     padding: 10,
     marginBottom: 5,
-    width: width / 1.25
+    width: width / 1.2
   },
   owlet_vital_container_text_white: {
     color: "#FFF",
@@ -117,5 +117,13 @@ export default StyleSheet.create({
     color: "#EEAC46",
     fontSize: 20,
     fontWeight: "700"
+  },
+  owlet_date: {
+    color: "#fff",
+    fontWeight: "900",
+    fontSize: 20,
+    paddingVertical: 10,
+    width: width / 1.2,
+    textDecorationLine: "underline"
   }
 });
